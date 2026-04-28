@@ -1,22 +1,27 @@
-
 const apnaClass = document.querySelectorAll(".chai");
 
 apnaClass.forEach(element => {
     const classArray = element.getAttribute("class").split(" ");
-
     const classFilter = classArray.filter((ele) => ele.trim() !== "");
 
+    const transforms = [];
+
+    const textAlignValues = ["center", "left", "right", "justify"];
+    const textSizeValues = ["sm", "base", "lg", "xl", "2xl"];
+
     classFilter.forEach(x => {
+
         // ===== TEXT COLOR =====
         if (x.startsWith("text-")) {
             const colorValue = x.slice(5);
-            element.style.color = colorValue;
+            if (!textAlignValues.includes(colorValue) && !textSizeValues.includes(colorValue)) {
+                element.style.color = colorValue;
+            }
         }
 
-        // ===== BACKGROUND COLOR & IMAGE =====
+        // ===== BACKGROUND COLOR =====
         if (x.startsWith("bg-")) {
-            const bgValue = x.slice(3);
-            element.style.backgroundColor = bgValue;
+            element.style.backgroundColor = x.slice(3);
         }
 
         // ===== PADDING =====
@@ -44,9 +49,9 @@ apnaClass.forEach(element => {
             element.style.marginRight = x.slice(3);
 
         // ===== WIDTH & HEIGHT =====
-        if (x.startsWith("w-"))
+        if (x.startsWith("w-") && !x.startsWith("min-w-") && !x.startsWith("max-w-"))
             element.style.width = x.slice(2);
-        if (x.startsWith("h-"))
+        if (x.startsWith("h-") && !x.startsWith("min-h-") && !x.startsWith("max-h-"))
             element.style.height = x.slice(2);
         if (x.startsWith("min-w-"))
             element.style.minWidth = x.slice(6);
@@ -58,9 +63,10 @@ apnaClass.forEach(element => {
             element.style.maxHeight = x.slice(6);
 
         // ===== BORDER =====
-        if (x.startsWith("border-") && !x.startsWith("border-color") && !x.startsWith("border-width")) {
+        if (x.startsWith("border-") && !x.startsWith("border-color-") && !x.startsWith("border-width-")) {
             const borderValue = x.slice(7);
-            element.style.border = borderValue + " solid";
+            element.style.borderWidth = borderValue;
+            element.style.borderStyle = "solid";
         }
         if (x.startsWith("border-color-"))
             element.style.borderColor = x.slice(13);
@@ -69,28 +75,19 @@ apnaClass.forEach(element => {
         if (x.startsWith("rounded-"))
             element.style.borderRadius = x.slice(8);
 
-        // ===== DISPLAY & POSITIONING =====
-        if (x === "flex")
-            element.style.display = "flex";
-        if (x === "grid")
-            element.style.display = "grid";
-        if (x === "block")
-            element.style.display = "block";
-        if (x === "inline")
-            element.style.display = "inline";
-        if (x === "inline-block")
-            element.style.display = "inline-block";
-        if (x === "hidden")
-            element.style.display = "none";
+        // ===== DISPLAY =====
+        if (x === "flex") element.style.display = "flex";
+        if (x === "grid") element.style.display = "grid";
+        if (x === "block") element.style.display = "block";
+        if (x === "inline") element.style.display = "inline";
+        if (x === "inline-block") element.style.display = "inline-block";
+        if (x === "hidden") element.style.display = "none";
 
-        if (x === "absolute")
-            element.style.position = "absolute";
-        if (x === "relative")
-            element.style.position = "relative";
-        if (x === "fixed")
-            element.style.position = "fixed";
-        if (x === "sticky")
-            element.style.position = "sticky";
+        // ===== POSITIONING =====
+        if (x === "absolute") element.style.position = "absolute";
+        if (x === "relative") element.style.position = "relative";
+        if (x === "fixed") element.style.position = "fixed";
+        if (x === "sticky") element.style.position = "sticky";
 
         // ===== POSITION PROPERTIES =====
         if (x.startsWith("top-"))
@@ -108,7 +105,7 @@ apnaClass.forEach(element => {
         if (x.startsWith("opacity-"))
             element.style.opacity = x.slice(8);
 
-        // ===== FONT PROPERTIES =====
+        // ===== FONT SIZE =====
         if (x.startsWith("text-")) {
             const textValue = x.slice(5);
             if (textValue === "sm") element.style.fontSize = "0.875rem";
@@ -118,99 +115,64 @@ apnaClass.forEach(element => {
             else if (textValue === "2xl") element.style.fontSize = "1.5rem";
         }
 
-        if (x === "font-bold")
-            element.style.fontWeight = "bold";
-        if (x === "font-normal")
-            element.style.fontWeight = "normal";
-        if (x === "font-light")
-            element.style.fontWeight = "300";
+        // ===== FONT WEIGHT =====
+        if (x === "font-bold") element.style.fontWeight = "bold";
+        if (x === "font-normal") element.style.fontWeight = "normal";
+        if (x === "font-light") element.style.fontWeight = "300";
         if (x.startsWith("font-weight-"))
             element.style.fontWeight = x.slice(12);
 
-        if (x === "italic")
-            element.style.fontStyle = "italic";
-        if (x === "not-italic")
-            element.style.fontStyle = "normal";
+        // ===== FONT STYLE =====
+        if (x === "italic") element.style.fontStyle = "italic";
+        if (x === "not-italic") element.style.fontStyle = "normal";
 
         // ===== TEXT ALIGNMENT =====
-        if (x === "text-center")
-            element.style.textAlign = "center";
-        if (x === "text-left")
-            element.style.textAlign = "left";
-        if (x === "text-right")
-            element.style.textAlign = "right";
-        if (x === "text-justify")
-            element.style.textAlign = "justify";
+        if (x === "text-center") element.style.textAlign = "center";
+        if (x === "text-left") element.style.textAlign = "left";
+        if (x === "text-right") element.style.textAlign = "right";
+        if (x === "text-justify") element.style.textAlign = "justify";
 
         // ===== TEXT DECORATION =====
-        if (x === "underline")
-            element.style.textDecoration = "underline";
-        if (x === "line-through")
-            element.style.textDecoration = "line-through";
-        if (x === "no-underline")
-            element.style.textDecoration = "none";
+        if (x === "underline") element.style.textDecoration = "underline";
+        if (x === "line-through") element.style.textDecoration = "line-through";
+        if (x === "no-underline") element.style.textDecoration = "none";
 
         // ===== TEXT TRANSFORM =====
-        if (x === "uppercase")
-            element.style.textTransform = "uppercase";
-        if (x === "lowercase")
-            element.style.textTransform = "lowercase";
-        if (x === "capitalize")
-            element.style.textTransform = "capitalize";
+        if (x === "uppercase") element.style.textTransform = "uppercase";
+        if (x === "lowercase") element.style.textTransform = "lowercase";
+        if (x === "capitalize") element.style.textTransform = "capitalize";
 
         // ===== FLEX PROPERTIES =====
-        if (x === "flex-row")
-            element.style.flexDirection = "row";
-        if (x === "flex-col")
-            element.style.flexDirection = "column";
-        if (x === "flex-wrap")
-            element.style.flexWrap = "wrap";
-        if (x === "flex-nowrap")
-            element.style.flexWrap = "nowrap";
+        if (x === "flex-row") element.style.flexDirection = "row";
+        if (x === "flex-col") element.style.flexDirection = "column";
+        if (x === "flex-wrap") element.style.flexWrap = "wrap";
+        if (x === "flex-nowrap") element.style.flexWrap = "nowrap";
 
-        if (x === "justify-center")
-            element.style.justifyContent = "center";
-        if (x === "justify-between")
-            element.style.justifyContent = "space-between";
-        if (x === "justify-start")
-            element.style.justifyContent = "flex-start";
-        if (x === "justify-end")
-            element.style.justifyContent = "flex-end";
+        if (x === "justify-center") element.style.justifyContent = "center";
+        if (x === "justify-between") element.style.justifyContent = "space-between";
+        if (x === "justify-start") element.style.justifyContent = "flex-start";
+        if (x === "justify-end") element.style.justifyContent = "flex-end";
 
-        if (x === "items-center")
-            element.style.alignItems = "center";
-        if (x === "items-start")
-            element.style.alignItems = "flex-start";
-        if (x === "items-end")
-            element.style.alignItems = "flex-end";
-        if (x === "items-stretch")
-            element.style.alignItems = "stretch";
+        if (x === "items-center") element.style.alignItems = "center";
+        if (x === "items-start") element.style.alignItems = "flex-start";
+        if (x === "items-end") element.style.alignItems = "flex-end";
+        if (x === "items-stretch") element.style.alignItems = "stretch";
 
         if (x.startsWith("gap-"))
             element.style.gap = x.slice(4);
 
         // ===== OVERFLOW =====
-        if (x === "overflow-auto")
-            element.style.overflow = "auto";
-        if (x === "overflow-hidden")
-            element.style.overflow = "hidden";
-        if (x === "overflow-visible")
-            element.style.overflow = "visible";
-        if (x === "overflow-scroll")
-            element.style.overflow = "scroll";
-
-        if (x === "overflow-x-auto")
-            element.style.overflowX = "auto";
-        if (x === "overflow-y-auto")
-            element.style.overflowY = "auto";
+        if (x === "overflow-auto") element.style.overflow = "auto";
+        if (x === "overflow-hidden") element.style.overflow = "hidden";
+        if (x === "overflow-visible") element.style.overflow = "visible";
+        if (x === "overflow-scroll") element.style.overflow = "scroll";
+        if (x === "overflow-x-auto") element.style.overflowX = "auto";
+        if (x === "overflow-y-auto") element.style.overflowY = "auto";
 
         // ===== CURSOR =====
-        if (x === "cursor-pointer")
-            element.style.cursor = "pointer";
-        if (x === "cursor-default")
-            element.style.cursor = "default";
-        if (x === "cursor-not-allowed")
-            element.style.cursor = "not-allowed";
+        if (x === "cursor-pointer") element.style.cursor = "pointer";
+        if (x === "cursor-default") element.style.cursor = "default";
+        if (x === "cursor-not-allowed") element.style.cursor = "not-allowed";
 
         // ===== SHADOW =====
         if (x.startsWith("shadow-")) {
@@ -221,10 +183,13 @@ apnaClass.forEach(element => {
         }
 
         // ===== TRANSFORM =====
-        if (x.startsWith("rotate-"))
-            element.style.transform = "rotate(" + x.slice(7) + "deg)";
-        if (x.startsWith("scale-"))
-            element.style.transform = "scale(" + x.slice(6) + ")";
+        if (x.startsWith("rotate-")) {
+            const rotateVal = x.slice(7).replace("deg", "");
+            transforms.push("rotate(" + rotateVal + "deg)");
+        }
+        if (x.startsWith("scale-")) {
+            transforms.push("scale(" + x.slice(6) + ")");
+        }
 
         // ===== TRANSITION =====
         if (x === "transition")
@@ -232,18 +197,18 @@ apnaClass.forEach(element => {
         if (x.startsWith("duration-"))
             element.style.transitionDuration = x.slice(9) + "ms";
 
-        // ===== ADDITIONAL PROPERTIES =====
-        if (x === "float-left")
-            element.style.float = "left";
-        if (x === "float-right")
-            element.style.float = "right";
-        if (x === "float-none")
-            element.style.float = "none";
-
-        if (x === "clear-both")
-            element.style.clear = "both";
+        // ===== FLOAT & CLEAR =====
+        if (x === "float-left") element.style.float = "left";
+        if (x === "float-right") element.style.float = "right";
+        if (x === "float-none") element.style.float = "none";
+        if (x === "clear-both") element.style.clear = "both";
 
     });
+
+    if (transforms.length > 0) {
+        element.style.transform = transforms.join(" ");
+    }
+
 });
 
-console.log("End of Code - Expanded CSS Properties Loaded!")
+console.log("End of Code");
