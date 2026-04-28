@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apna CSS – Docs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #111118;
+            --surface2: #1a1a24;
+            --border: #ffffff12;
+            --border-hover: #ffffff28;
+            --accent: #7c6bff;
+            --accent2: #ff6b9d;
+            --accent3: #6bffcb;
+            --text: #f0f0f8;
+            --text-muted: #8888aa;
+            --text-dim: #444460;
+            --code-bg: #0d0d1a;
+            --sidebar-w: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Noise overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        /* TOP NAV */
+        .topnav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 60px;
+            background: rgba(10,10,15,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover { color: var(--text); background: var(--surface2); }
+
+        .nav-btn {
+            background: var(--accent);
+            color: #fff !important;
+            border-radius: 8px;
+            padding: 7px 16px !important;
+            font-size: 0.82rem !important;
+            transition: opacity 0.2s !important;
+        }
+        .nav-btn:hover { opacity: 0.85; background: transparent !important; }
+
+        /* LAYOUT */
+        .layout {
+            display: flex;
+            padding-top: 60px;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-w);
+            position: fixed;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            border-right: 1px solid var(--border);
+            background: var(--surface);
+            padding: 28px 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .sidebar-section {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            padding: 10px 24px 6px;
+            display: block;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 24px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.87rem;
+            font-weight: 400;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .sidebar a:hover {
+            color: var(--text);
+            background: rgba(124,107,255,0.06);
+            border-left-color: var(--accent);
+        }
+
+        .sidebar a.active {
+            color: var(--accent);
+            background: rgba(124,107,255,0.1);
+            border-left-color: var(--accent);
+            font-weight: 500;
+        }
+
+        .sidebar-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--text-dim);
+            flex-shrink: 0;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 90px 72px 80px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -100px; right: -100px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(124,107,255,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            color: var(--accent3);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            width: 28px; height: 1px;
+            background: var(--accent3);
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 580px;
+            margin-bottom: 36px;
+            font-weight: 300;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #5a4de0);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 24px rgba(124,107,255,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(124,107,255,0.4);
+        }
+
+        .btn-secondary {
+            background: var(--surface2);
+            color: var(--text);
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--border-hover);
+            background: #22222e;
+        }
+
+        .hero-install {
+            margin-top: 40px;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            max-width: 100%;
+        }
+
+        .hero-install code {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent3);
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .copy-btn:hover { color: var(--text); border-color: var(--border-hover); }
+
+        /* STATS BAR */
+        .stats {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat {
+            flex: 1;
+            padding: 28px 40px;
+            border-right: 1px solid var(--border);
+        }
+        .stat:last-child { border-right: none; }
+
+        .stat-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text), var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 64px 72px;
+            max-width: 900px;
+        }
+
+        .section { margin-bottom: 72px; }
+
+        .section-header {
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 16px;
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3::before {
+            content: '';
+            width: 3px; height: 16px;
+            background: linear-gradient(to bottom, var(--accent), var(--accent2));
+            border-radius: 2px;
+        }
+
+        p { color: var(--text-muted); margin-bottom: 16px; line-height: 1.8; }
+
+        /* CODE BLOCKS */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 16px 0 28px;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .code-lang {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .code-dots span {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+        }
+
+        .code-dots span:nth-child(1) { background: #ff5f56; }
+        .code-dots span:nth-child(2) { background: #ffbd2e; }
+        .code-dots span:nth-child(3) { background: #27c93f; }
+
+        pre {
+            padding: 20px 24px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        code {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.8;
+            color: #c9d1d9;
+        }
+
+        .code-block code .kw { color: #ff7b72; }
+        .code-block code .str { color: #a5d6ff; }
+        .code-block code .cls { color: var(--accent3); }
+        .code-block code .com { color: #555575; }
+        .code-block code .attr { color: var(--accent2); }
+
+        /* UTILITY TABLE */
+        .util-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0 28px;
+        }
+
+        .util-item {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .util-item:hover { border-color: var(--border-hover); }
+
+        .util-class {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--accent3);
+            background: rgba(107,255,203,0.08);
+            padding: 2px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .util-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* CLASS TABLE */
+        .class-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 28px;
+            font-size: 0.85rem;
+        }
+
+        .class-table th {
+            text-align: left;
+            padding: 10px 16px;
+            background: var(--surface2);
+            color: var(--text-dim);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-family: 'Space Mono', monospace;
+            font-weight: 400;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .class-table th:first-child { border-radius: 10px 0 0 0; }
+        .class-table th:last-child { border-radius: 0 10px 0 0; }
+
+        .class-table td {
+            padding: 11px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .class-table tr:last-child td { border-bottom: none; }
+        .class-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .class-table td:first-child {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--accent3);
+        }
+
+        .class-table td:last-child { color: var(--text-dim); font-size: 0.8rem; }
+
+        /* PILL TAGS */
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 24px; }
+
+        .tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72rem;
+            padding: 5px 12px;
+            border-radius: 100px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .tag:hover { border-color: var(--accent); color: var(--accent); }
+        .tag.purple { color: var(--accent); border-color: rgba(124,107,255,0.3); background: rgba(124,107,255,0.08); }
+        .tag.pink { color: var(--accent2); border-color: rgba(255,107,157,0.3); background: rgba(255,107,157,0.08); }
+        .tag.green { color: var(--accent3); border-color: rgba(107,255,203,0.3); background: rgba(107,255,203,0.08); }
+
+        /* FEATURE CARDS */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .feature-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent), var(--accent2));
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .feature-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+        .feature-card:hover::before { opacity: 1; }
+
+        .feature-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .feature-card p {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* INLINE CODE */
+        :not(.code-block) > code {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            background: rgba(124,107,255,0.12);
+            color: var(--accent);
+            padding: 2px 7px;
+            border-radius: 5px;
+        }
+
+        /* CALLOUT */
+        .callout {
+            background: rgba(124,107,255,0.07);
+            border: 1px solid rgba(124,107,255,0.2);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 20px 0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+        .callout p { color: var(--text-muted); margin: 0; font-size: 0.87rem; }
+
+        /* DIVIDER */
+        hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+        /* FOOTER */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 36px 72px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+        }
+
+        .footer-left strong { color: var(--text-muted); }
+
+        .footer-links { display: flex; gap: 20px; }
+        .footer-links a {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--accent); }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero > * {
+            animation: fadeUp 0.5s ease both;
+        }
+        .hero > *:nth-child(1) { animation-delay: 0.05s; }
+        .hero > *:nth-child(2) { animation-delay: 0.1s; }
+        .hero > *:nth-child(3) { animation-delay: 0.15s; }
+        .hero > *:nth-child(4) { animation-delay: 0.2s; }
+        .hero > *:nth-child(5) { animation-delay: 0.25s; }
+
+        /* MOBILE */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .content { padding: 36px 24px; }
+            .hero { padding: 60px 24px; }
+            .feature-grid { grid-template-columns: 1fr 1fr; }
+            .util-grid { grid-template-columns: 1fr; }
+            .stats { flex-wrap: wrap; }
+            .stat { border-right: none; border-bottom: 1px solid var(--border); }
+            .footer { flex-direction: column; gap: 16px; padding: 28px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+    <a href="#" class="logo">
+        <span class="logo-badge">CSS</span>
+        Apna Tailwind
+    </a>
+    <div class="nav-links">
+        <a href="#installation">Docs</a>
+        <a href="#utilities">Utilities</a>
+        <a href="#examples">Examples</a>
+        <a href="https://github.com/rupeshgadariya/Apna_Tailwind_Css" target="_blank" class="nav-btn">GitHub →</a>
+    </div>
+</nav>
+
+<div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-section">
+            <span class="sidebar-label">Getting Started</span>
+            <a href="#intro" class="active"><span class="sidebar-dot"></span>Introduction</a>
+            <a href="#installation"><span class="sidebar-dot"></span>Installation</a>
+            <a href="#how-it-works"><span class="sidebar-dot"></span>How It Works</a>
+        </div>
+        <div class="sidebar-section">
+            <span class="sidebar-label">Utilities</span>
+            <a href="#colors"><span class="sidebar-dot"></span>Colors</a>
+            <a href="#spacing"><span class="sidebar-dot"></span>Spacing</a>
+            <a href="#sizing"><span class="sidebar-dot"></span>Width & Height</a>
+            <a href="#border"><span class="sidebar-dot"></span>Border</a>
+            <a href="#display"><span class="sidebar-dot"></span>Display</a>
+            <a href="#position"><span class="sidebar-dot"></span>Positioning</a>
+            <a href="#typography"><span class="sidebar-dot"></span>Typography</a>
+            <a href="#flex"><span class="sidebar-dot"></span>Flexbox</a>
+            <a href="#effects"><span class="sidebar-dot"></span>Effects</a>
+            <a href="#transform"><span class="sidebar-dot"></span>Transform</a>
+            <a href="#transition"><span class="sidebar-dot"></span>Transition</a>
+        </div>
+        <div class="sidebar-section">
+            <span class="sidebar-label">Reference</span>
+            <a href="#examples"><span class="sidebar-dot"></span>Examples</a>
+            <a href="#browser"><span class="sidebar-dot"></span>Browser Support</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <!-- HERO -->
+        <section class="hero" id="intro">
+            <div class="hero-eyebrow">Open Source · Pure JavaScript · No Build Step</div>
+            <h1>Style your HTML<br>with <span>utility classes</span></h1>
+            <p>Apna CSS is a lightweight, Tailwind-inspired utility class framework. No build tools, no config—just add a CDN link and start styling with familiar class syntax.</p>
+            <div class="hero-actions">
+                <a href="#installation" class="btn-primary">Get Started →</a>
+                <a href="https://github.com/rupeshgadariya/Apna_Tailwind_Css" target="_blank" class="btn-secondary">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                    View on GitHub
+                </a>
+            </div>
+            <div class="hero-install">
+                <code id="cdn-code">&lt;script src="https://cdn.jsdelivr.net/gh/rupeshgadariya/Apna_Tailwind_Css@main/apnaCss.js"&gt;&lt;/script&gt;</code>
+                <button class="copy-btn" onclick="copyCode()">Copy</button>
+            </div>
+        </section>
+
+        <!-- STATS -->
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-num">50+</div>
+                <div class="stat-label">Utility Classes</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">0KB</div>
+                <div class="stat-label">CSS Required</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">1</div>
+                <div class="stat-label">Script Tag Needed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">4</div>
+                <div class="stat-label">Browsers Supported</div>
+            </div>
+        </div>
+
+        <div class="content">
+
+            <!-- FEATURES -->
+            <div class="feature-grid" style="margin-bottom: 64px; margin-top: 8px;">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(124,107,255,0.12);">⚡</div>
+                    <h4>Zero Config</h4>
+                    <p>Drop in a script tag and go. No PostCSS, no Node.js, no build step.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(255,107,157,0.12);">🎨</div>
+                    <h4>Tailwind Syntax</h4>
+                    <p>Familiar class names if you already know Tailwind CSS.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: rgba(107,255,203,0.12);">🪶</div>
+                    <h4>Lightweight</h4>
+                    <p>Pure JavaScript. No external CSS files. Tiny footprint.</p>
+                </div>
+            </div>
+
+            <!-- INSTALLATION -->
+            <section class="section" id="installation">
+                <div class="section-header">
+                    <span class="section-tag">01 · Setup</span>
+                    <h2>Installation</h2>
+                </div>
+
+                <p>Add the CDN script tag before the closing <code>&lt;/body&gt;</code> tag of your HTML file. No npm, no configuration needed.</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dots"><span></span><span></span><span></span></div>
+                        <span class="code-lang">HTML</span>
+                    </div>
+                    <pre><code><span class="com">&lt;!-- Add before &lt;/body&gt; --&gt;</span>
+<span class="kw">&lt;script</span> <span class="attr">src</span>=<span class="str">"https://cdn.jsdelivr.net/gh/rupeshgadariya/Apna_Tailwind_Css@main/apnaCss.js"</span><span class="kw">&gt;&lt;/script&gt;</span></code></pre>
+                </div>
+
+                <p>Then add the <code>chai</code> class to any element you want to style, along with your utility classes:</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <div class="code-dots"><span></span><span></span><span></span></div>
+                        <span class="code-lang">HTML</span>
+                    </div>
+                    <pre><code><span class="kw">&lt;h1</span> <span class="attr">class</span>=<span class="str">"chai text-red m-10"</span><span class="kw">&gt;</span>Hello World<span class="kw">&lt;/h1&gt;</span>
+
+<span class="kw">&lt;div</span> <span class="attr">class</span>=<span class="str">"chai flex justify-center items-center p-20 bg-lightblue"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;p</span> <span class="attr">class</span>=<span class="str">"chai text-lg text-center font-bold"</span><span class="kw">&gt;</span>Centered Content<span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;/div&gt;</span></code></pre>
+                </div>
+
+                <div class="callout">
+                    <span class="callout-icon">💡</span>
+                    <p>The <code>chai</code> class is required on every element you want Apna CSS to process. Think of it as the activation class that tells the script which elements to style.</p>
+                </div>
+            </section>
+
+            <!-- HOW IT WORKS -->
+            <section class="section" id="how-it-works">
+                <div class="section-header">
+                    <span class="section-tag">02 · Core</span>
+                    <h2>How It Works</h2>
+                </div>
+                <p>Apna CSS is a pure JavaScript implementation. When the script loads, it runs through these steps:</p>
+                <div class="util-grid">
+                    <div class="util-item">
+                        <span class="util-class">Step 1</span>
+                        <span class="util-desc">Selects all elements with the <code>chai</code> class</span>
+                    </div>
+                    <div class="util-item">
+                        <span class="util-class">Step 2</span>
+                        <span class="util-desc">Parses all utility class names on each element</span>
+                    </div>
+                    <div class="util-item">
+                        <span class="util-class">Step 3</span>
+                        <span class="util-desc">Matches each class name to a CSS property</span>
+                    </div>
+                    <div class="util-item">
+                        <span class="util-class">Step 4</span>
+                        <span class="util-desc">Applies styles and combines complex transforms</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COLORS -->
+            <section class="section" id="colors">
+                <div class="section-header">
+                    <span class="section-tag">03 · Utilities</span>
+                    <h2>Colors</h2>
+                </div>
+                <h3>Text Color</h3>
+                <p>Use <code>text-&lt;color&gt;</code> to set font color. You can use named colors or hex values.</p>
+                <div class="tags">
+                    <span class="tag">text-red</span>
+                    <span class="tag">text-blue</span>
+                    <span class="tag">text-green</span>
+                    <span class="tag">text-darkblue</span>
+                    <span class="tag">text-gray</span>
+                    <span class="tag">text-#ff0000</span>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">HTML</span></div>
+                    <pre><code><span class="kw">&lt;p</span> <span class="attr">class</span>=<span class="str">"chai text-red"</span><span class="kw">&gt;</span>Red text<span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;p</span> <span class="attr">class</span>=<span class="str">"chai text-blue"</span><span class="kw">&gt;</span>Blue text<span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;p</span> <span class="attr">class</span>=<span class="str">"chai text-#28a745"</span><span class="kw">&gt;</span>Custom hex color<span class="kw">&lt;/p&gt;</span></code></pre>
+                </div>
+
+                <h3>Background Color</h3>
+                <p>Use <code>bg-&lt;color&gt;</code> to set background color.</p>
+                <div class="tags">
+                    <span class="tag">bg-red</span>
+                    <span class="tag">bg-blue</span>
+                    <span class="tag">bg-lightgray</span>
+                    <span class="tag">bg-lightblue</span>
+                    <span class="tag">bg-#000000</span>
+                </div>
+            </section>
+
+            <!-- SPACING -->
+            <section class="section" id="spacing">
+                <div class="section-header">
+                    <span class="section-tag">04 · Utilities</span>
+                    <h2>Spacing</h2>
+                </div>
+                <p>Control padding and margin using shorthand or individual side classes. Values are in pixels.</p>
+
+                <h3>Padding</h3>
+                <table class="class-table">
+                    <thead>
+                        <tr><th>Class</th><th>Property</th><th>Example</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>p-{n}</td><td>padding: {n}px</td><td>p-20</td></tr>
+                        <tr><td>pt-{n}</td><td>padding-top</td><td>pt-10</td></tr>
+                        <tr><td>pb-{n}</td><td>padding-bottom</td><td>pb-10</td></tr>
+                        <tr><td>pl-{n}</td><td>padding-left</td><td>pl-15</td></tr>
+                        <tr><td>pr-{n}</td><td>padding-right</td><td>pr-15</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Margin</h3>
+                <table class="class-table">
+                    <thead>
+                        <tr><th>Class</th><th>Property</th><th>Example</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>m-{n}</td><td>margin: {n}px</td><td>m-20</td></tr>
+                        <tr><td>mt-{n}</td><td>margin-top</td><td>mt-10</td></tr>
+                        <tr><td>mb-{n}</td><td>margin-bottom</td><td>mb-10</td></tr>
+                        <tr><td>ml-{n}</td><td>margin-left</td><td>ml-15</td></tr>
+                        <tr><td>mr-{n}</td><td>margin-right</td><td>mr-15</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- SIZING -->
+            <section class="section" id="sizing">
+                <div class="section-header">
+                    <span class="section-tag">05 · Utilities</span>
+                    <h2>Width & Height</h2>
+                </div>
+                <table class="class-table">
+                    <thead>
+                        <tr><th>Class</th><th>Property</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>w-{n}</td><td>width: {n}px</td></tr>
+                        <tr><td>h-{n}</td><td>height: {n}px</td></tr>
+                        <tr><td>min-w-{n}</td><td>min-width: {n}px</td></tr>
+                        <tr><td>max-w-{n}</td><td>max-width: {n}px</td></tr>
+                        <tr><td>min-h-{n}</td><td>min-height: {n}px</td></tr>
+                        <tr><td>max-h-{n}</td><td>max-height: {n}px</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- BORDER -->
+            <section class="section" id="border">
+                <div class="section-header">
+                    <span class="section-tag">06 · Utilities</span>
+                    <h2>Border</h2>
+                </div>
+                <div class="util-grid">
+                    <div class="util-item"><span class="util-class">border-{n}</span><span class="util-desc">Border width in px (e.g. border-2)</span></div>
+                    <div class="util-item"><span class="util-class">border-color-{c}</span><span class="util-desc">Border color (e.g. border-color-red)</span></div>
+                    <div class="util-item"><span class="util-class">rounded-{n}</span><span class="util-desc">Border radius (e.g. rounded-10 or rounded-50%)</span></div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">HTML</span></div>
+                    <pre><code><span class="kw">&lt;div</span> <span class="attr">class</span>=<span class="str">"chai border-2 border-color-blue rounded-10"</span><span class="kw">&gt;</span>
+  Rounded bordered box
+<span class="kw">&lt;/div&gt;</span></code></pre>
+                </div>
+            </section>
+
+            <!-- DISPLAY -->
+            <section class="section" id="display">
+                <div class="section-header">
+                    <span class="section-tag">07 · Utilities</span>
+                    <h2>Display</h2>
+                </div>
+                <div class="tags">
+                    <span class="tag purple">flex</span>
+                    <span class="tag purple">grid</span>
+                    <span class="tag purple">block</span>
+                    <span class="tag purple">inline</span>
+                    <span class="tag purple">inline-block</span>
+                    <span class="tag purple">hidden</span>
+                </div>
+            </section>
+
+            <!-- POSITIONING -->
+            <section class="section" id="position">
+                <div class="section-header">
+                    <span class="section-tag">08 · Utilities</span>
+                    <h2>Positioning</h2>
+                </div>
+                <div class="tags">
+                    <span class="tag pink">absolute</span>
+                    <span class="tag pink">relative</span>
+                    <span class="tag pink">fixed</span>
+                    <span class="tag pink">sticky</span>
+                </div>
+                <p>Use directional classes to set position offset values:</p>
+                <div class="util-grid">
+                    <div class="util-item"><span class="util-class">top-{n}</span><span class="util-desc">top: {n}px</span></div>
+                    <div class="util-item"><span class="util-class">bottom-{n}</span><span class="util-desc">bottom: {n}px</span></div>
+                    <div class="util-item"><span class="util-class">left-{n}</span><span class="util-desc">left: {n}px</span></div>
+                    <div class="util-item"><span class="util-class">right-{n}</span><span class="util-desc">right: {n}px</span></div>
+                </div>
+                <p>Also includes <code>z-{n}</code> for z-index and <code>opacity-{n}</code> for opacity (0–1).</p>
+            </section>
+
+            <!-- TYPOGRAPHY -->
+            <section class="section" id="typography">
+                <div class="section-header">
+                    <span class="section-tag">09 · Utilities</span>
+                    <h2>Typography</h2>
+                </div>
+
+                <h3>Font Size</h3>
+                <table class="class-table">
+                    <thead><tr><th>Class</th><th>Size</th></tr></thead>
+                    <tbody>
+                        <tr><td>text-sm</td><td>0.875rem</td></tr>
+                        <tr><td>text-base</td><td>1rem</td></tr>
+                        <tr><td>text-lg</td><td>1.125rem</td></tr>
+                        <tr><td>text-xl</td><td>1.25rem</td></tr>
+                        <tr><td>text-2xl</td><td>1.5rem</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Font Weight</h3>
+                <div class="tags">
+                    <span class="tag">font-bold</span>
+                    <span class="tag">font-normal</span>
+                    <span class="tag">font-light</span>
+                    <span class="tag">font-weight-{n}</span>
+                </div>
+
+                <h3>Alignment & Decoration</h3>
+                <div class="tags">
+                    <span class="tag green">text-center</span>
+                    <span class="tag green">text-left</span>
+                    <span class="tag green">text-right</span>
+                    <span class="tag green">text-justify</span>
+                    <span class="tag green">underline</span>
+                    <span class="tag green">line-through</span>
+                    <span class="tag green">uppercase</span>
+                    <span class="tag green">lowercase</span>
+                    <span class="tag green">capitalize</span>
+                    <span class="tag green">italic</span>
+                    <span class="tag green">not-italic</span>
+                </div>
+            </section>
+
+            <!-- FLEX -->
+            <section class="section" id="flex">
+                <div class="section-header">
+                    <span class="section-tag">10 · Utilities</span>
+                    <h2>Flexbox</h2>
+                </div>
+                <table class="class-table">
+                    <thead><tr><th>Class</th><th>Property</th></tr></thead>
+                    <tbody>
+                        <tr><td>flex-row</td><td>flex-direction: row</td></tr>
+                        <tr><td>flex-col</td><td>flex-direction: column</td></tr>
+                        <tr><td>flex-wrap</td><td>flex-wrap: wrap</td></tr>
+                        <tr><td>flex-nowrap</td><td>flex-wrap: nowrap</td></tr>
+                        <tr><td>justify-center</td><td>justify-content: center</td></tr>
+                        <tr><td>justify-between</td><td>justify-content: space-between</td></tr>
+                        <tr><td>justify-start</td><td>justify-content: flex-start</td></tr>
+                        <tr><td>justify-end</td><td>justify-content: flex-end</td></tr>
+                        <tr><td>items-center</td><td>align-items: center</td></tr>
+                        <tr><td>items-start</td><td>align-items: flex-start</td></tr>
+                        <tr><td>items-end</td><td>align-items: flex-end</td></tr>
+                        <tr><td>items-stretch</td><td>align-items: stretch</td></tr>
+                        <tr><td>gap-{n}</td><td>gap: {n}px</td></tr>
+                    </tbody>
+                </table>
+                <div class="code-block">
+                    <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">HTML</span></div>
+                    <pre><code><span class="kw">&lt;div</span> <span class="attr">class</span>=<span class="str">"chai flex flex-row justify-between items-center gap-10"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;div&gt;</span>Left<span class="kw">&lt;/div&gt;</span>
+  <span class="kw">&lt;div&gt;</span>Right<span class="kw">&lt;/div&gt;</span>
+<span class="kw">&lt;/div&gt;</span></code></pre>
+                </div>
+            </section>
+
+            <!-- EFFECTS -->
+            <section class="section" id="effects">
+                <div class="section-header">
+                    <span class="section-tag">11 · Utilities</span>
+                    <h2>Effects & Overflow</h2>
+                </div>
+                <h3>Shadow</h3>
+                <div class="util-grid">
+                    <div class="util-item"><span class="util-class">shadow-sm</span><span class="util-desc">Subtle shadow (1px blur)</span></div>
+                    <div class="util-item"><span class="util-class">shadow-md</span><span class="util-desc">Medium shadow (6px blur)</span></div>
+                    <div class="util-item"><span class="util-class">shadow-lg</span><span class="util-desc">Large shadow (15px blur)</span></div>
+                </div>
+                <h3>Overflow</h3>
+                <div class="tags">
+                    <span class="tag">overflow-auto</span>
+                    <span class="tag">overflow-hidden</span>
+                    <span class="tag">overflow-visible</span>
+                    <span class="tag">overflow-scroll</span>
+                    <span class="tag">overflow-x-auto</span>
+                    <span class="tag">overflow-y-auto</span>
+                </div>
+                <h3>Cursor</h3>
+                <div class="tags">
+                    <span class="tag">cursor-pointer</span>
+                    <span class="tag">cursor-default</span>
+                    <span class="tag">cursor-not-allowed</span>
+                </div>
+            </section>
+
+            <!-- TRANSFORM -->
+            <section class="section" id="transform">
+                <div class="section-header">
+                    <span class="section-tag">12 · Utilities</span>
+                    <h2>Transform</h2>
+                </div>
+                <div class="util-grid">
+                    <div class="util-item"><span class="util-class">rotate-{n}</span><span class="util-desc">Rotate element (e.g. rotate-45)</span></div>
+                    <div class="util-item"><span class="util-class">scale-{n}</span><span class="util-desc">Scale element (e.g. scale-1.5)</span></div>
+                </div>
+            </section>
+
+            <!-- TRANSITION -->
+            <section class="section" id="transition">
+                <div class="section-header">
+                    <span class="section-tag">13 · Utilities</span>
+                    <h2>Transition</h2>
+                </div>
+                <div class="util-grid">
+                    <div class="util-item"><span class="util-class">transition</span><span class="util-desc">all 0.3s ease</span></div>
+                    <div class="util-item"><span class="util-class">duration-{ms}</span><span class="util-desc">Custom duration in ms</span></div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">HTML</span></div>
+                    <pre><code><span class="kw">&lt;button</span> <span class="attr">class</span>=<span class="str">"chai bg-blue text-white p-10 rounded-5 transition duration-300 cursor-pointer"</span><span class="kw">&gt;</span>
+  Hover Me
+<span class="kw">&lt;/button&gt;</span></code></pre>
+                </div>
+            </section>
+
+            <!-- EXAMPLES -->
+            <section class="section" id="examples">
+                <div class="section-header">
+                    <span class="section-tag">14 · Reference</span>
+                    <h2>Full Example</h2>
+                </div>
+                <p>A complete page layout using only Apna CSS utility classes:</p>
+                <div class="code-block">
+                    <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">HTML</span></div>
+                    <pre><code><span class="kw">&lt;!DOCTYPE html&gt;</span>
+<span class="kw">&lt;html</span> <span class="attr">lang</span>=<span class="str">"en"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+  <span class="kw">&lt;meta</span> <span class="attr">charset</span>=<span class="str">"UTF-8"</span><span class="kw">&gt;</span>
+  <span class="kw">&lt;title&gt;</span>Apna CSS Demo<span class="kw">&lt;/title&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+
+  <span class="com">&lt;!-- Hero Section --&gt;</span>
+  <span class="kw">&lt;div</span> <span class="attr">class</span>=<span class="str">"chai flex justify-center items-center p-20 bg-lightblue"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;h1</span> <span class="attr">class</span>=<span class="str">"chai text-2xl text-center text-darkblue font-bold m-10"</span><span class="kw">&gt;</span>
+      Welcome to Apna CSS
+    <span class="kw">&lt;/h1&gt;</span>
+  <span class="kw">&lt;/div&gt;</span>
+
+  <span class="com">&lt;!-- Card --&gt;</span>
+  <span class="kw">&lt;div</span> <span class="attr">class</span>=<span class="str">"chai p-20 m-10 border-2 border-color-gray rounded-10 shadow-md"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;p</span> <span class="attr">class</span>=<span class="str">"chai text-lg text-gray"</span><span class="kw">&gt;</span>
+      A lightweight CSS framework.
+    <span class="kw">&lt;/p&gt;</span>
+  <span class="kw">&lt;/div&gt;</span>
+
+  <span class="com">&lt;!-- Button --&gt;</span>
+  <span class="kw">&lt;button</span> <span class="attr">class</span>=<span class="str">"chai p-10 m-5 bg-blue text-white rounded-5 cursor-pointer transition"</span><span class="kw">&gt;</span>
+    Click Me
+  <span class="kw">&lt;/button&gt;</span>
+
+  <span class="kw">&lt;script</span> <span class="attr">src</span>=<span class="str">"https://cdn.jsdelivr.net/gh/rupeshgadariya/Apna_Tailwind_Css@main/apnaCss.js"</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span></code></pre>
+                </div>
+            </section>
+
+            <!-- BROWSER SUPPORT -->
+            <section class="section" id="browser">
+                <div class="section-header">
+                    <span class="section-tag">15 · Reference</span>
+                    <h2>Browser Support</h2>
+                </div>
+                <div class="util-grid">
+                    <div class="util-item"><span class="util-class">Chrome</span><span class="util-desc">Full support ✓</span></div>
+                    <div class="util-item"><span class="util-class">Firefox</span><span class="util-desc">Full support ✓</span></div>
+                    <div class="util-item"><span class="util-class">Safari</span><span class="util-desc">Full support ✓</span></div>
+                    <div class="util-item"><span class="util-class">Edge</span><span class="util-desc">Full support ✓</span></div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-left">
+                Made with ☕ by <strong>Rupesh Gadariya</strong> · Open Source
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/rupeshgadariya/Apna_Tailwind_Css" target="_blank">GitHub</a>
+                <a href="https://cdn.jsdelivr.net/gh/rupeshgadariya/Apna_Tailwind_Css@main/apnaCss.js" target="_blank">CDN</a>
+            </div>
+        </footer>
+    </main>
+</div>
+
+<script>
+    // Copy CDN button
+    function copyCode() {
+        const code = document.getElementById('cdn-code').textContent;
+        navigator.clipboard.writeText(code).then(() => {
+            const btn = document.querySelector('.copy-btn');
+            btn.textContent = 'Copied!';
+            btn.style.color = '#6bffcb';
+            setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
+        });
+    }
+
+    // Active sidebar link on scroll
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const sideLinks = document.querySelectorAll('.sidebar a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(sec => {
+            if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
+        });
+        sideLinks.forEach(a => {
+            a.classList.remove('active');
+            if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+        });
+    });
+</script>
+
+</body>
+</html>
